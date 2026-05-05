@@ -29,7 +29,7 @@ security:
 
     # Note: Only the *first* matching rule is applied
     access_control:
-        - { path: ^/_respatch/api, roles: ROLE_RESPATCH }
+#        - { path: ^/_respatch/api, roles: ROLE_RESPATCH }
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 
@@ -43,3 +43,8 @@ when@test:
                 cost: 4 # Lowest possible value for bcrypt
                 time_cost: 3 # Lowest possible value for argon
                 memory_cost: 10 # Lowest possible value for argon
+when@dev:
+    security:
+        firewalls:
+            respatch_api:
+                pattern: ^/_respatch/api/allowed-by-dev
