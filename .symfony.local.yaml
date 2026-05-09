@@ -6,7 +6,16 @@ http:
     port: 8075
     preferred_port: 8001
 workers:
-    messenger_async:
+    messenger_async_1:
+        cmd: [ 'symfony', 'console', 'messenger:consume', 'async' ,'--time-limit=3600' ]
+        watch: [ 'config', 'src', 'templates']
+    messenger_async_2:
+        cmd: [ 'symfony', 'console', 'messenger:consume', 'async' ,'--time-limit=3600' ]
+        watch: [ 'config', 'src', 'templates']
+    messenger_async_3:
+        cmd: [ 'symfony', 'console', 'messenger:consume', 'async' ,'--time-limit=3600' ]
+        watch: [ 'config', 'src', 'templates']
+    messenger_async_4:
         cmd: [ 'symfony', 'console', 'messenger:consume', 'async' ,'--time-limit=3600' ]
         watch: [ 'config', 'src', 'templates']
     scheduler:
