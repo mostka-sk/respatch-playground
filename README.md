@@ -83,7 +83,7 @@ A Symfony Messenger worker is used for continuous background processing of async
    autostart=true
    autorestart=true
    process_name=%(program_name)s_%(process_num)02d
-   
+   /var/www/respatch-server-alfa/
    # Paths to log files (make sure the worker has write permissions to them)
    stdout_logfile=/path/to/project/var/log/messenger_worker.log
    stderr_logfile=/path/to/project/var/log/messenger_worker_err.log

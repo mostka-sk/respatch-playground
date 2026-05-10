@@ -13,6 +13,7 @@ config:
         - .env.local
     shared_dirs:
         - var/log
+        - var/log
 
     # Nastavenia pre Composer (beží pod become userom)
     composer_options: '--no-interaction --optimize-autoloader'
@@ -46,8 +47,11 @@ tasks:
         - run: sudo /usr/sbin/service php8.5-fpm reload
     messenger:restart:
         - run: 'supervisorctl -u user -p 123 restart messenger-consume:*'
+    db:reset:
+        - run: 'cd {{release_or_current_path}} && bash bin/reset-db.sh'
 after:
     deploy:symlink:
         - apache:reload
+        - db:reset
 #        - messenger:restart
     deploy:failed: deploy:unlock
