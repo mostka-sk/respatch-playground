@@ -1,0 +1,53 @@
+import:
+    - recipe/symfony.php
+
+config:
+    repository: 'git@github.com:mostka-sk/respatch-playground.git'
+    branch: 'main'
+    # Súbory a priečinky, ktoré ostávajú v shared priečinku
+    http_user: www-data
+    writable_mode: chmod
+
+    # Zdieľané súbory a priečinky
+    shared_files:
+        - .env.local
+    shared_dirs:
+        - var/log
+
+    # Nastavenia pre Composer (beží pod become userom)
+    composer_options: '--no-interaction --optimize-autoloader'
+#    composer_options: '--no-dev --no-interaction --optimize-autoloader'
+
+hosts:
+    alfa:
+        hostname: 37.205.15.159
+        remote_user: root
+        deploy_path: /var/www/respatch-server-alfa
+        become: www-data
+        ssh_arguments:
+            - -A
+    beta:
+        hostname: 37.205.15.159
+        remote_user: root
+        deploy_path: /var/www/respatch-server-beta
+        become: www-data
+        ssh_arguments:
+            - -A
+    gama:
+        hostname: 37.205.15.159
+        remote_user: root
+        deploy_path: /var/www/respatch-server-gama
+        become: www-data
+        ssh_arguments:
+            - -A
+
+tasks:
+    apache:reload:
+        - run: sudo /usr/sbin/service php8.5-fpm reload
+    messenger:restart:
+        - run: 'supervisorctl -u user -p 123 restart messenger-consume:*'
+after:
+    deploy:symlink:
+        - apache:reload
+#        - messenger:restart
+    deploy:failed: deploy:unlock
